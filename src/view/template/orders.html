@@ -1,0 +1,175 @@
+<section>
+    <h3 class="text-center">订单列表</h3>
+    <nav class="navbar navbar-default navbar-margin">
+        <div class="container-fluid">
+            <div class="navbar-form navbar-left">
+                <div class="form-group form-inline">
+                    <label for="search">智能筛选: </label> <input type="text" ng-model="search" id="search" class="form-control">
+                </div>
+            </div>
+            <button class="btn btn-primary navbar-btn" ng-click="add()" data-toggle="modal" data-target="#add">添加订单</button>
+            <button class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#total">汇总</button>
+            <div class="modal fade" id="total">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                            <h4 class="modal-title">订单收入统计</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">开始时间:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group date form_dateTime">
+                                            <input type="text" class="form-control" placeholder="请选择开始时间" id="t_start" >
+                                            <span class="input-group-addon cursor" ng-click="dateTime()"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">结束时间:</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-group date form_dateTime">
+                                            <input type="text" class="form-control" id="t_end" placeholder="请选择结束时间">
+                                            <span class="input-group-addon cursor"  ng-click="dateTime()"><i class="glyphicon glyphicon-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">统计规则:</label>
+                                    <div class="col-sm-8">
+                                        <select id="t_rule">
+                                            <option value="0">按月</option>
+                                            <option value="1">按日</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" ng-click="total_sure()" data-toggle="modal" data-target="#highChart">确定</button>
+                            <button class="btn btn-default" ng-click="total_cancel()">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="add">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                            <h4 class="modal-title">信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">洗衣机ID:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="t_socket">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">洗衣时长:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="t_duration">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">价格:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="t_amount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">模式:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="t_mode">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">消费地点:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="t_addr">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" ng-click="add_sure()">确定</button>
+                            <button class="btn btn-default" ng-click="add_cancel()">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="table-responsive">
+        <table class="table table-bordered table-p">
+            <thead>
+            <tr class="table-color">
+                <th class="text-center">订单ID</th>
+                <th class="text-center">客户ID</th>
+                <th class="text-center">客户姓名</th>
+                <th class="text-center">开始洗衣时间</th>
+                <th class="text-center">洗衣总价</th>
+                <th class="text-center">洗衣时长</th>
+                <th class="text-center">用户手机号</th>
+                <th class="text-center">洗衣机ID</th>
+                <th class="text-center">模式</th>
+                <th class="text-center">消费地点</th>
+                <th class="text-center">订单状态</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="x in orders | filter:search" ng-click="showareaItem($index)" class="text-center">
+                <td>{{x.id}}</td>
+                <td>{{x.userid}}</td>
+                <td>{{x.customer_name}}</td>
+                <td>{{x.starttime}}</td>
+                <td>{{x.amount}}</td>
+                <td>{{x.duration}}</td>
+                <td>{{x.mobile}}</td>
+                <td>{{x.socket}}</td>
+                <td>{{x.mode}}</td>
+                <td>{{x.addr}}</td>
+                <td>{{x.status | orderStatus}}</td>
+                <td>
+                    <button class="btn btn-primary btn-xs" ng-click="confirm_pay($index)">确认付款</button>
+                    <button class="btn btn-primary btn-xs" ng-click="finish_order($index)">确认完成</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="modal fade" id="highChart">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                        <h4 class="modal-title">信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="container" style="width: 858px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--分页-->
+    <nav class="text-center">
+        <ul class="pagination">
+            <li>
+                <a aria-label="Previous" ng-click="toPreviouspage()" href="javascript:;">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li ng-repeat="y in paginationsnum" ng-click="pagination_page($index)" class="Pagination"><a href="javascript:;">{{y.name}}</a></li>
+            <li>
+                <a  aria-label="Next" ng-click="toNextpage()" href="javascript:;">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>

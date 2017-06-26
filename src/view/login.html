@@ -1,0 +1,27 @@
+<div class="login_container">
+    <div class="login">
+        <h3>洗衣机后台登录</h3>
+        <form validator>
+          <div class="form-group">
+            <div class="input-group">
+                <label class="input-group-addon"><span class="glyphicon glyphicon-user"></span></label>
+                <input type="text" id="t_username" name="username" class="form-control input-lg" placeholder="Mobile">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+                <label class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></label>
+                <input type="password" id="t_password" name="password" class="form-control input-lg" placeholder="Password">
+            </div>
+          </div>
+          <div class="form-group text-center">
+              <a ui-sref="reset" ng-click="resetPsd()">忘记密码？</a>
+          </div>
+          <div class="form-group">
+            <div class="input-group col-xs-10">
+                <button id="t_login" ng-click="submit()" name="signup" class="btn btn-primary btn-block btn-lg">&nbsp;&nbsp;登 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 录&nbsp;&nbsp;</button>
+            </div>
+          </div>
+      </form>
+  </div>
+</div>

@@ -1,0 +1,130 @@
+<section>
+    <h3 class="text-center">学校列表</h3>
+    <nav class="navbar navbar-default navbar-margin">
+        <div class="container-fluid">
+            <div class="navbar-form navbar-left">
+                <div class="form-group form-inline">
+                    <label for="search">智能筛选: </label> <input type="text" ng-model="search" id="search" class="form-control">
+                </div>
+            </div>
+            <button class="btn btn-primary navbar-btn" ng-click="add()" data-toggle="modal" data-target="#add">添加学校</button>
+            <div class="modal fade" id="add">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                            <h4 class="modal-title">信息</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">学校名称:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="addItem.name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">所属城市ID:</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" ng-model="addItem.cid">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" ng-click="add_sure()">确定</button>
+                            <button class="btn btn-default" ng-click="add_cancel()">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="table-responsive">
+        <table class="table table-bordered table-p">
+            <thead>
+            <tr class="table-color">
+                <th class="text-center">学校ID</th>
+                <th class="text-center">学校名称</th>
+                <th class="text-center">所属城市ID</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="x in schools | filter:search" ng-click="showareaItem($index)" class="text-center">
+                <td>{{x.id}}</td>
+                <td>{{x.name}}</td>
+                <td>{{x.city}}</td>
+                <td class="text-center">
+                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#checkModel" ng-click="check($index)">查看详细</button>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="modal fade" id="checkModel" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                        <h4 class="modal-title">信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">学校名称:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="schoolItem.name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">所属城市ID:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" ng-model="schoolItem.city">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger" ng-click="check_del()" data-toggle="modal" data-target="#del">删除</button>
+                        <button class="btn btn-primary" ng-click="check_sure()">确定</button>
+                        <button class="btn btn-default" ng-click="check_cancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="del" data-backdrop="static">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" id="close"><span>&times;</span></button>
+                        <h4 class="text-left">操作</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>您确定要执行删除操作？</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="del_sure()">确定</button>
+                        <button class="btn btn-default" ng-click="del_cancel()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--分页-->
+    <nav class="text-center">
+        <ul class="pagination">
+            <li>
+                <a aria-label="Previous" ng-click="toPreviouspage()" href="javascript:;">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li ng-repeat="y in paginationsnum" ng-click="pagination_page($index)" class="Pagination"><a href="javascript:;">{{y.name}}</a></li>
+            <li>
+                <a  aria-label="Next" ng-click="toNextpage()" href="javascript:;">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>

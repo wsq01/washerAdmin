@@ -1,0 +1,263 @@
+
+html,body,div,input{
+    padding:0;
+    margin:0;
+}
+a:hover{
+    text-decoration: none;
+}
+.login{
+    box-shadow: 0 2px 50px 8px rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    padding:10% 10%;
+    display: table-cell;
+    vertical-align: middle;
+}
+.login_container .input-group{
+    margin:8% auto;
+}
+.login_container{
+    padding-top: 10%;
+    display: table;
+    margin:0 auto;
+    height: 100%;
+}
+/*清楚浮动*/
+.clearfix:after{
+    content:'';
+    display: block;
+    clear:both;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+.cursor{
+    cursor: pointer;
+}
+html{
+    width: 100%;
+    height: 100%;
+}
+body{
+  height: 100%;
+}
+input:focus{
+    outline:none;
+}
+/*section主页中的样式*/
+.navbar{
+    margin-bottom:10px;
+}
+.table-color{
+    background-color: #96b97d;
+}
+.table-p tr td{
+    position: relative;
+}
+.table >tbody> tr> td{
+    padding:7px;
+}
+.text-ellipsis{
+    width: 200px;
+    height: 22px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.pagination{
+    margin:0;
+}
+.navbar-margin{
+    margin-bottom: 0;
+}
+h3{
+    margin-top: 10px;
+}
+.table>tbody>tr>td{
+    padding:6px 5px;
+}
+.form-m9{
+    margin:-9px;
+}
+.form-control[readonly]{
+    cursor: pointer;
+}
+#deviceTable{
+    display: none;
+}
+.file-preview-image{
+    height:160px;
+}
+/*post页面*/
+.post-left{
+    position: absolute;
+    width:141px;
+    height: 87%;
+    border: 1px solid #ccc;
+    margin:0 0 0 1%;
+    z-index: 9;
+}
+.post-left nav li a{
+    color: #000;
+}
+.post-left nav li a:hover{
+    transition: .4s;
+    background-color: #428bca;
+    color:#fff;
+}
+.post-left nav li a:focus{
+    background-color: #428bca;
+    color: #fff;
+}
+.post-left nav li a:visited{
+    background-color: #3071a9;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: .4s;
+}
+.post-left .nav-stacked>li+li{
+    margin-top:0;
+}
+.post-left>nav>li{
+    border-bottom: 1px solid #CCCCCC;
+}
+.post-right{
+    position: absolute;
+    width: 91%;
+    top: 56px;
+    left: 159px;
+    border-left:none ;
+    border-top:1px solid #ccc;
+}
+#post_title{
+    position: absolute;
+    top: 16px;
+    left: 46%;
+    color:#000;
+    font-size: 16px;
+    font-weight: bold;
+    list-style: none;
+    z-index:1;
+}
+.addreply{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    padding:0 10px;
+    height: 24px;
+    background-color: #286090;
+    border:1px solid #ccc;
+    color:#fff;
+    font-size: 12px;
+    line-height: 24px;
+    border-radius:5px;
+}
+.arrow_bottom{
+    position: absolute;
+    text-align: right;
+    width: 85%;
+    padding-right: 15%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    line-height: 28px;
+    cursor:pointer;
+}
+.box{
+    width: 100%;
+    height: 120%;
+    display: none;
+    position: absolute;
+    top: 48px;
+    left: 0;
+    z-index:99;
+    background-color: #fff;
+}
+.reply_toTop{
+    width: 100%;
+    height: 24px;
+    background-color: #ccc;
+    margin:0 auto;
+    text-align: center;
+    line-height: 24px;
+    color:#000;
+    cursor: pointer;
+}
+.catsOne{
+    position: relative;
+}
+.catsTwo{
+    width:141px;
+    background-color: #fff;
+    margin:0 0 0 1%;
+    position: absolute;
+    top:0;
+    right:-141px;
+}
+.catsThree{
+    width:141px;
+    background-color: #fff;
+    margin:0 0 0 1%;
+    position: absolute;
+    top:0;
+    right:-141px;
+}
+.catsThree li,.catsTwo li{
+    border:1px solid #ccc;
+}
+
+
+/*公用样式*/
+.topnav{
+    background-color:#3b5998;
+}
+.topnav ul li a.white{
+    color: #fff;
+}
+.topnav ul li a.white:visited{
+    color:#fff;
+}
+.topnav ul li a.white:hover{
+    color:#3b5998;
+    background-color: #fff;
+    cursor: pointer;
+}
+.navbar-default .navbar-brand{
+    color: #fff;
+}
+.navbar-default .navbar-brand:hover,.navbar-default .navbar-brand:focus{
+    color:#fff;
+}
+.navbar-default .navbar-toggle .icon-bar{
+    background-color: #fff;
+}
+.navbar-default .navbar-toggle:hover,.navbar-default .navbar-toggle:focus{
+    background-color: #3b5998;
+}
+#main{
+    height:92%;
+    margin:0 2px;
+    border: 2px solid #ccc;
+    position: relative;
+    overflow: auto;
+}
+@media (max-width: 767px){
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a{
+        color:#fff;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover{
+        color: #fff;
+    }
+}
+#admin{
+    margin-right:10%;
+}
+#admin li a{
+    color: #fff;
+}
+#admin li a:hover{
+    color: #1dff21;
+}

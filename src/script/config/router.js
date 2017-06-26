@@ -1,0 +1,56 @@
+angular.module('app').config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+  $stateProvider.state('users', {
+    url: '/users',
+    templateUrl: 'view/users.html',
+    controller: 'usersCtrl'
+  }).state('buildings', {
+    url: '/buildings',
+    templateUrl: 'view/buildings.html',
+    controller: 'buildingsCtrl'
+  }).state('devices', {
+    url: '/devices',
+    templateUrl: 'view/devices.html',
+    controller: 'devicesCtrl'
+  }).state('districts', {
+    url: '/districts',
+    templateUrl: 'view/districts.html',
+    controller: 'districtsCtrl'
+  }).state('floors', {
+    url: '/floors',
+    templateUrl: 'view/floors.html',
+    controller: 'floorsCtrl'
+  }).state('orders', {
+    url: '/orders',
+    templateUrl: 'view/orders.html',
+    controller: 'ordersCtrl'
+  }).state('schools', {
+    url: '/schools',
+    templateUrl: 'view/schools.html',
+    controller: 'schoolsCtrl'
+  }).state('sockets', {
+    url: '/sockets',
+    templateUrl: 'view/sockets.html',
+    controller: 'socketsCtrl'
+  }).state('types', {
+    url: '/types',
+    templateUrl: 'view/types.html',
+    controller: 'typesCtrl'
+  }).state('vendors', {
+    url: '/vendors',
+    templateUrl: 'view/vendors.html',
+    controller: 'vendorsCtrl'
+  }).state('reset', {
+    url: '/reset',
+    templateUrl: 'view/reset.html',
+    controller: 'resetCtrl'
+  }).state('login', {
+    url: '/login',
+    templateUrl: 'view/login.html',
+    controller: 'loginCtrl'
+  }).state('managers', {
+    url: '/managers',
+    templateUrl: 'view/managers.html',
+    controller: 'managersCtrl'
+  });
+  $urlRouterProvider.otherwise('login');
+}])
