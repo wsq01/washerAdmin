@@ -1,4 +1,5 @@
 <section>
+  <div class="animated fadeIn">
     <h3 class="text-center">管理员列表</h3>
     <nav class="navbar navbar-default navbar-margin">
         <div class="container-fluid">
@@ -8,62 +9,6 @@
                 </div>
             </div>
             <button class="btn btn-primary navbar-btn" ng-click="addAdmin()" data-toggle="modal" data-target="#addAdmin">添加管理员</button>
-            <div class="modal fade" id="addAdmin">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                            <h4 class="modal-title">信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="t_tel">手机号:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="t_tel">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="t_name">姓名:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="t_name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="t_pwd">密码:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="t_pwd">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="t_status">状态:</label>
-                                    <div class="col-sm-9">
-                                      <div class="radio" id="t_status">
-                                        <label>
-                                          <input type="radio" name="t_status" value="1">
-                                          有效
-                                        </label>
-                                        <label>
-                                          <input type="radio" name="t_status" value="0" >无效
-                                        </label>
-                                      </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="t_pwd">代理商ID:</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="t_vendorid">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" ng-click="add_sure()"ng-disabled="time?true:false">确定</button>
-                            <button class="btn btn-default" ng-click="add_cancel()">取消</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </nav>
     <div class="table-responsive">
@@ -90,111 +35,154 @@
                 <td class="text-center">{{x.type=="1"?"超级管理员":"普通管理员"}}</td>
                 <td class="text-center">{{x.turnVendor}}</td>
                 <td class="text-center">
-                    <button ng-click="checkUser($index)" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#checkUser">修改</button>
-
-                    <button class="btn btn-primary btn-xs" ng-click="del_user($index)" data-target="#del" data-toggle="modal">删除</button>
-                    <div class="modal modal-p  fade" id="del">
-                        <div class="modal-dialog modal-sm">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button class="close" id="close"><span>&times;</span></button>
-                                    <h4 class="text-left">操作</h4>
-                                </div>
-                                <div class="modal-body text-center">
-                                    <p>您确定要执行删除操作？</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-primary" ng-click="del_sure()">确定</button>
-                                    <button class="btn btn-default" ng-click="del_cancel()">取消</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <button ng-click="change($index)" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#changeModal">修改</button>
+                    <button class="btn btn-primary btn-xs" ng-click="delete($index)" data-target="#deleteModal" data-toggle="modal">删除</button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="modal fade" id="checkUser">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                        <h4 class="modal-title">信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">电话:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="userItem.mobile" disabled>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">密码:</label>
-                                <div class="col-sm-8">
-                                    <input type="password" class="form-control" ng-model="userItem.password">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">状态:</label>
-                                <div class="col-sm-8">
-                                  <div class="radio">
-                                    <label>
-                                      <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==1?true:false" value="1">
-                                      有效
-                                    </label>
-                                      <label>
-                                        <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==0?true:false" value="0">
-                                        无效
-                                      </label>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">类型:</label>
-                                <div class="col-sm-8">
-                                  <div class="radio">
-                                    <label>
-                                      <input type="radio" name="type" ng-model="userItem.type" ng-checked="userItem.type==1?true:false" value="1">
-                                      超级管理员
-                                    </label>
-                                      <label>
-                                        <input type="radio" name="type" ng-model="userItem.type" ng-checked="userItem.type==2?true:false" value="2">
-                                        普通管理员
-                                      </label>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">代理商ID:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="userItem.turnVendor" disabled>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" ng-click="sure_user()">确定</button>
-                        <button class="btn btn-default" ng-click="cancel_check()">取消</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-    <!-- 分页标签 -->
-    <nav class="text-center">
-        <ul class="pagination">
-            <li>
-                <a aria-label="Previous" ng-click="toPreviouspage()" href="javascript:;">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li ng-repeat="y in paginationsnum" ng-click="pagination_page($index)" class="Pagination"><a href="javascript:;">{{y.name}}</a></li>
-            <li>
-                <a  aria-label="Next" ng-click="toNextpage()" href="javascript:;">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <!-- 分页 -->
+    <div app-page ng-hide="user.length==0"></div>
+  </div>
+
+  <div class="modal fade" id="addAdmin">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                  <h4 class="modal-title">信息</h4>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">手机号:</label>
+                          <div class="col-sm-9">
+                              <input type="text" class="form-control" ng-model="addItem.mobile">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">姓名:</label>
+                          <div class="col-sm-9">
+                              <input type="text" class="form-control" ng-model="addItem.name">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">密码:</label>
+                          <div class="col-sm-9">
+                              <input type="text" class="form-control" ng-model="addItem.pwd">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label">状态:</label>
+                          <div class="col-sm-9">
+                            <div class="radio" id="t_status">
+                              <label>
+                                <input type="radio" name="t_status" value="1">
+                                有效
+                              </label>
+                              <label>
+                                <input type="radio" name="t_status" value="0" >无效
+                              </label>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-2 control-label" for="t_pwd">代理商ID:</label>
+                          <div class="col-sm-9">
+                              <input type="text" class="form-control" ng-model="addItem.vendor">
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="add_sure()"ng-disabled="time?true:false">确定</button>
+                  <button class="btn btn-default" ng-click="add_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="changeModal">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                  <h4 class="modal-title">信息</h4>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">电话:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="userItem.mobile" disabled>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">密码:</label>
+                          <div class="col-sm-8">
+                              <input type="password" class="form-control" ng-model="userItem.password">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">状态:</label>
+                          <div class="col-sm-8">
+                            <div class="radio">
+                              <label>
+                                <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==1?true:false" value="1">
+                                有效
+                              </label>
+                                <label>
+                                  <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==0?true:false" value="0">
+                                  无效
+                                </label>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">类型:</label>
+                          <div class="col-sm-8">
+                            <div class="radio">
+                              <label>
+                                <input type="radio" name="type" ng-model="userItem.type" ng-checked="userItem.type==1?true:false" value="1">
+                                超级管理员
+                              </label>
+                                <label>
+                                  <input type="radio" name="type" ng-model="userItem.type" ng-checked="userItem.type==2?true:false" value="2">
+                                  普通管理员
+                                </label>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">代理商ID:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="userItem.turnVendor" disabled>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="change_sure()">确定</button>
+                  <button class="btn btn-default" ng-click="change_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="deleteModal">
+      <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" id="close"><span>&times;</span></button>
+                  <h4 class="text-left">操作</h4>
+              </div>
+              <div class="modal-body text-center">
+                  <p>您确定要执行删除操作？</p>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="delete_sure()">确定</button>
+                  <button class="btn btn-default" ng-click="delete_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </section>

@@ -72,8 +72,8 @@ angular.module('app').controller('socketsCtrl', ['$http', '$scope','locals', fun
             $('#add').modal('hide')
         }
     };
-    // 查看详细**********
-    $scope.check = function(index) {
+    // 修改****
+    $scope.change = function(index) {
         $scope.socketItem = $scope.sockets[index];
         var s_device = $scope.socketItem.device,
             s_price=$scope.socketItem.price,
@@ -81,47 +81,7 @@ angular.module('app').controller('socketsCtrl', ['$http', '$scope','locals', fun
             s_index=$scope.socketItem.index,
             s_num=$scope.socketItem.num,
             s_socketname=$scope.socketItem.socketname;
-        // 查看详细的删除
-        $scope.check_del= function() {
-            $scope.del_sure = function() {
-                // 调用删除地区信息接口
-                $http({
-                    method: "post",
-                    url: "../../db/socket.php",
-                    data: {
-                        sid: sid,
-                        cmd: "del",
-                        id:$scope.socketItem.id
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    transformRequest: function(data) {return $.param(data);}
-                }).success(function(data) {
-                    console.log(data);
-                    var big = Math.floor(($scope.socket.length - 1) / 18);
-                    var flag = ($scope.socket.length - 1) - big * 18;
-                    if (flag == 0) {
-                        if(agination_index == ($scope.paginationsnum.length-1)){
-                            agination_index--;
-                        }
-                        $scope.paginationsnum.length--;
-                    }
-                    getPagination(agination_index);
-                });
-                $('#del').modal('hide');
-                $('#checkModel').modal('hide');
-            };
-            // 点击取消
-            $scope.del_cancel=function () {
-                $('#del').modal('hide')
-            };
-            // 点击叉号
-            $('#close').click(function(){
-                $('#del').modal('hide')
-            })
-        };
-        //查看详细的确定
-        $scope.check_sure= function() {
-            // 调用修改地区信息接口
+        $scope.change_sure= function() {
             $http({
                 method: "post",
                 url: "../../db/socket.php",
@@ -139,20 +99,53 @@ angular.module('app').controller('socketsCtrl', ['$http', '$scope','locals', fun
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 transformRequest: function(data) {return $.param(data);}
             }).success(function (data) {
-                console.log(data);
+                $('#changeModal').modal('hide');
             });
-            $('#checkModel').modal('hide')
         };
-        //查看详情的取消
-        $scope.check_cancel=function () {
+        $scope.change_cancel=function () {
             $scope.socketItem.device = s_device;
             $scope.socketItem.price=s_price;
             $scope.socketItem.type=s_type;
             $scope.socketItem.index=s_index;
             $scope.socketItem.num=s_num;
             $scope.socketItem.socketname=s_socketname;
-            $('#checkModel').modal('hide')
+            $('#changeModal').modal('hide')
         };
+    };
+    // 删除
+    $scope.delete= function(index) {
+        $scope.socketItem = $scope.sockets[index];
+        $scope.delete_sure = function() {
+            $http({
+                method: "post",
+                url: "../../db/socket.php",
+                data: {
+                    sid: sid,
+                    cmd: "del",
+                    id:$scope.socketItem.id
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(data) {return $.param(data);}
+            }).success(function(data) {
+                console.log(data);
+                var big = Math.floor(($scope.socket.length - 1) / 18);
+                var flag = ($scope.socket.length - 1) - big * 18;
+                if (flag == 0) {
+                    if(agination_index == ($scope.paginationsnum.length-1)){
+                        agination_index--;
+                    }
+                    $scope.paginationsnum.length--;
+                }
+                getPagination(agination_index);
+            });
+            $('#deleteModal').modal('hide');
+        };
+        $scope.delete_cancel=function () {
+            $('#deleteModal').modal('hide')
+        };
+        $('#close').click(function(){
+            $('#deleteModal').modal('hide')
+        })
     };
     // 分页
     $scope.pagination_page = function(index) {

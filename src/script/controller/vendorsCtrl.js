@@ -1,8 +1,12 @@
-angular.module('app').controller('vendorsCtrl', ['$http', '$scope','locals', function($http, $scope,locals){
+angular.module('app').controller('vendorsCtrl', ['$http', '$scope','locals','NgTableParams', function($http, $scope,locals,NgTableParams){
   var userInfo=locals.getObject('userInfo'),
       sid=userInfo.sid,
       uid=window.localStorage.getItem('uid');
-  var agination_index = 0;
+      var agination_index = 0;
+
+
+
+
     // 调用获取用户列表接口 **********
     $http({
         method:"post",
@@ -17,6 +21,13 @@ angular.module('app').controller('vendorsCtrl', ['$http', '$scope','locals', fun
         console.log(data);
         $scope.user = data.vendors;
         $scope.users = [];
+
+
+        $scope.vendorTable=new NgTableParams({},{
+          dataset:$scope.user
+        })
+
+        
         // 页数
         $scope.paginationsnum = [];
         var num =  Math.ceil($scope.user.length/18);
@@ -33,6 +44,7 @@ angular.module('app').controller('vendorsCtrl', ['$http', '$scope','locals', fun
             }
         }
     });
+
     //分页
     $scope.pagination_page = function(index){
         agination_index = index;
@@ -78,12 +90,13 @@ angular.module('app').controller('vendorsCtrl', ['$http', '$scope','locals', fun
             $($('.pagination li.Pagination')[agination_index]).addClass('active').siblings().removeClass('active');
         });
     }
-    //查看详细**********
-    $scope.checkUser = function(index){
+    //修改****
+    $scope.change = function(index){
         $scope.userItem = $scope.users[index];
-        //点击确定
-        $scope.sure_user=function () {
-            // 调用获取用户信息接口
+        var s_company=$scope.userItem.company,
+            s_level=$scope.userItem.level,
+            s_status=$scope.userItem.status;
+        $scope.change_sure=function () {
             $http({
                 method:"post",
                 url:"../../db/user.php",
@@ -110,11 +123,10 @@ angular.module('app').controller('vendorsCtrl', ['$http', '$scope','locals', fun
                 }
                 getPagination(agination_index);
             });
-            $('#checkUser').modal('hide')
+            $('#changeModal').modal('hide');
         };
-        //点击取消
-        $scope.cancel_check=function () {
-            $('#checkUser').modal('hide')
+        $scope.change_cancel=function () {
+            $('#changeModal').modal('hide');
         };
     };
     //添加代理商**********

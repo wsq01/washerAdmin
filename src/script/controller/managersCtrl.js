@@ -82,13 +82,13 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                 $($('.pagination li.Pagination')[agination_index]).addClass('active').siblings().removeClass('active');
             });
         }
-        //查看详细**********
-        $scope.checkUser = function(index){
+        //修改****
+        $scope.change = function(index){
             $scope.userItem = $scope.users[index];
-            var s_pwd=$scope.userItem.password;
-            //点击确定
-            $scope.sure_user=function () {
-                // 调用获取用户信息接口
+            var s_pwd=$scope.userItem.password,
+                s_status=$scope.userItem.status,
+                s_type=$scope.userItem.type;
+            $scope.change_sure=function () {
                 if(s_pwd==$scope.userItem.password){
                   $http({
                       method:"post",
@@ -104,7 +104,6 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       transformRequest: function (data) {return $.param(data);}
                   }).success(function(data){
-                      $('#checkUser').modal('hide');
                       //分页
                       var big = Math.floor(($scope.user.length - 1) / 18);
                       var flag = ($scope.user.length - 1) - big * 18;
@@ -115,7 +114,7 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                           $scope.paginationsnum.length--;
                       }
                       getPagination(agination_index);
-                      $('#checkUser').modal('hide');
+                      $('#changeModal').modal('hide');
                   });
                 }else {
                   $http({
@@ -132,8 +131,6 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                       transformRequest: function (data) {return $.param(data);}
                   }).success(function(data){
-                      $('#checkUser').modal('hide');
-                      //分页
                       var big = Math.floor(($scope.user.length - 1) / 18);
                       var flag = ($scope.user.length - 1) - big * 18;
                       if (flag == 0) {
@@ -143,22 +140,19 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                           $scope.paginationsnum.length--;
                       }
                       getPagination(agination_index);
-                      $('#checkUser').modal('hide');
+                      $('#changeModal').modal('hide');
                   });
                 }
 
             };
-            //点击取消
-            $scope.cancel_check=function () {
-                $('#checkUser').modal('hide')
+            $scope.change_cancel=function () {
+                $('#changeModal').modal('hide');
             };
         };
-        //点击删除
-        $scope.del_user = function(index){
+        //删除
+        $scope.delete = function(index){
           $scope.userItem = $scope.users[index];
-            //删除弹出框的确定
-            $scope.del_sure = function(){
-                //调用删除管理员接口
+            $scope.delete_sure = function(){
                 $http({
                     method:'post',
                     url:'../../db/user.php',
@@ -170,7 +164,6 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     transformRequest: function (data) {return $.param(data);}
                 }).success(function(){
-                    //分页 判断删除时，条数是否正好是18的倍数，如果是则agination_index要减一；
                     var big= Math.floor(($scope.user.length-1)/18);
                     var flag = ($scope.user.length-1) - big*18;
                     if(flag==0){
@@ -180,19 +173,17 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                         $scope.paginationsnum.length--;
                     }
                     getPagination(agination_index);
-                    $('#del').modal('hide');
+                    $('#deleteModal').modal('hide');
                 })
             };
-            //删除弹出框的取消
-            $scope.del_cancel=function () {
-                $('#del').modal('hide')
+            $scope.delete_cancel=function () {
+                $('#deleteModal').modal('hide');
             };
-            // 点击叉号
             $('#close').click(function(){
-                $('#del').modal('hide')
+                $('#deleteModal').modal('hide');
             })
         };
-        //修改密码********
+        //修改密码*****
         $scope.changePwd=function (index) {
             var pwd=md5(md5($('#t_newPwd').val()));
             $scope.changePwd_sure=function () {
@@ -220,24 +211,22 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
         };
         //添加管理员**********
         $scope.addAdmin = function() {
-            // 点击确定
             $scope.add_sure = function () {
-                var pwd = md5(md5($('#t_pwd').val())),
+                var pwd = md5(md5($scope.addItem.pwd)),
                     t_status=$("#t_status input[type='radio']:checked").val();
-                // 调用新增管理员用户
                 $http({
                     method: "post",
                     url: "../../db/user.php",
                     data: {
                         sid: sid,
                         cmd: "add_manager",
-                        mobile: $('#t_tel').val(),
-                        name: $('#t_name').val(),
+                        mobile: $scope.addItem.mobile,
+                        name: $scope.addItem.name,
                         pwd: pwd,
                         status:t_status,
                         gizwits_pwd:'',
                         type:"1",
-                        vendor: $('#t_vendorid').val()
+                        vendor: $scope.addItem.vendor
                     },
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     transformRequest: function (data) {return $.param(data);}
@@ -245,7 +234,6 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                     console.log(data);
                     $('#addAdmin').modal('hide').find('input').val('');
                     if(data.errno=="1"){
-                      // 页数
                       $scope.paginationsnum = [];
                       var num = Math.ceil(($scope.user.length + 1) / 18);
                       for (var j = 0; j < num; j++) {
@@ -260,7 +248,6 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
                     }
                 });
             };
-            //点击取消
             $scope.add_cancel = function () {
                 $('#addAdmin').modal('hide').find('input').val('');
             }
@@ -283,7 +270,7 @@ angular.module('app').controller('managersCtrl', ['$http', '$scope','locals', fu
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               transformRequest: function (data) {return $.param(data);}
           }).success(function(data){
-            $scope.user[i].turnVendor=data.vendors[0].company; 
+            $scope.user[i].turnVendor=data.vendors[0].company;
           })
         }
 }]);

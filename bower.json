@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "3",
     "js-md5": "md5#^0.4.2",
     "bootstrapvalidator": "bootstrapValidator#^0.5.3"
   }

@@ -36,7 +36,6 @@ angular.module('app').controller('districtsCtrl', ['$http', '$scope','locals', f
     // 添加地区**********
     $scope.add = function() {
         $scope.add_sure = function() {
-            // 调用添加地区信息接口
             $http({
                 method: "post",
                 url: "../../db/district.php",
@@ -49,7 +48,6 @@ angular.module('app').controller('districtsCtrl', ['$http', '$scope','locals', f
                 transformRequest: function(data) {return $.param(data);}
             }).success(function(data) {
                 console.log(data);
-                // 页数
                 $scope.paginationsnum = [];
                 var num = Math.ceil(($scope.district.length + 1) / 18);
                 for (var j = 0; j < num; j++) {
@@ -62,58 +60,15 @@ angular.module('app').controller('districtsCtrl', ['$http', '$scope','locals', f
             });
             $('#add').modal('hide');
         };
-        //点击取消
         $scope.add_cancel=function () {
             $('#add').modal('hide')
         }
     };
-    // 查看详细**********
-    $scope.check = function(index) {
+    // 修改****
+    $scope.change = function(index) {
         $scope.districtItem = $scope.districts[index];
-        // 保存初始的信息值
         var s_name = $scope.districtItem.name;
-        // 查看详细的删除
-        $scope.check_del= function() {
-            $scope.del_sure = function() {
-                // 调用删除地区信息接口
-                $http({
-                    method: "post",
-                    url: "../../db/district.php",
-                    data: {
-                        sid: sid,
-                        cmd: "del",
-                        id:$scope.districtItem.id
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    transformRequest: function(data) {return $.param(data);}
-                }).success(function(data) {
-                    console.log(data);
-                    //分页   判断删除时，地区条数是否正好是18的倍数，如果是则agination_index要减一
-                    var big = Math.floor(($scope.district.length - 1) / 18);
-                    var flag = ($scope.district.length - 1) - big * 18;
-                    if (flag == 0) {
-                        if(agination_index == ($scope.paginationsnum.length-1)){
-                            agination_index--;
-                        }
-                        $scope.paginationsnum.length--;
-                    }
-                    getPagination(agination_index);
-                });
-                $('#del').modal('hide');
-                $('#checkModel').modal('hide');
-            };
-            // 点击取消
-            $scope.del_cancel=function () {
-                $('#del').modal('hide')
-            };
-            // 点击叉号
-            $('#close').click(function(){
-                $('#del').modal('hide')
-            })
-        };
-        //查看详细的确定
-        $scope.check_sure= function() {
-            // 调用修改地区信息接口
+        $scope.change_sure= function() {
             $http({
                 method: "post",
                 url: "../../db/district.php",
@@ -128,13 +83,47 @@ angular.module('app').controller('districtsCtrl', ['$http', '$scope','locals', f
             }).success(function (data) {
                 console.log(data);
             });
-            $('#checkModel').modal('hide')
+            $('#changeModal').modal('hide');
         };
-        //查看详情的取消
         $scope.check_cancel=function () {
             $scope.districtItem.name = s_name;
-            $('#checkModel').modal('hide')
+            $('#changeModal').modal('hide');
         };
+    };
+    //删除
+    $scope.delete= function(index) {
+        $scope.districtItem = $scope.districts[index];
+        $scope.delete_sure = function() {
+            $http({
+                method: "post",
+                url: "../../db/district.php",
+                data: {
+                    sid: sid,
+                    cmd: "del",
+                    id:$scope.districtItem.id
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(data) {return $.param(data);}
+            }).success(function(data) {
+                console.log(data);
+                var big = Math.floor(($scope.district.length - 1) / 18);
+                var flag = ($scope.district.length - 1) - big * 18;
+                if (flag == 0) {
+                    if(agination_index == ($scope.paginationsnum.length-1)){
+                        agination_index--;
+                    }
+                    $scope.paginationsnum.length--;
+                }
+                getPagination(agination_index);
+            });
+            $('#deleteModal').modal('hide');
+        };
+        $scope.delete_cancel=function () {
+            $('#deleteModal').modal('hide')
+        };
+        $('#close').click(function(){
+            $('#deleteModal').modal('hide')
+        })
     };
     // 分页
     $scope.pagination_page = function(index) {

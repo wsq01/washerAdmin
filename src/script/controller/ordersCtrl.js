@@ -43,16 +43,16 @@ angular.module('app').controller('ordersCtrl', ['$http', '$scope','locals', func
                 data: {
                     sid: sid,
                     cmd: "add_order",
-                    socket:$('#t_socket').val(),
-                    duration:$('#t_duration').val(),
-                    amount:$('#t_amount').val(),
-                    mode:$('#t_mode').val()
+                    socket:$scope.addItem.socket,
+                    duration:$scope.addItem.duration,
+                    amount:$scope.addItem.amount,
+                    mode:$scope.addItem.mode,
+                    addr:$scope.addItem.addr
                 },
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(data) {return $.param(data);}
             }).success(function(data) {
                 console.log(data);
-                // 页数
                 $scope.paginationsnum = [];
                 var num = Math.ceil(($scope.order.length + 1) / 18);
                 for (var j = 0; j < num; j++) {
@@ -65,7 +65,6 @@ angular.module('app').controller('ordersCtrl', ['$http', '$scope','locals', func
             });
             $('#add').modal('hide');
         };
-        //点击取消
         $scope.add_cancel=function () {
             $('#add').modal('hide')
         }
@@ -147,7 +146,7 @@ angular.module('app').controller('ordersCtrl', ['$http', '$scope','locals', func
                     $scope.orders.push($scope.order[i - 1]);
                 }
             }
-            $($('.pagination li.Pagination')[agination_index]).addClass('active').siblings().removeClass('active');
+            $($('.pagination li')[agination_index]).addClass('active').siblings().removeClass('active');
         });
     }
     $scope.dateTime=function () {

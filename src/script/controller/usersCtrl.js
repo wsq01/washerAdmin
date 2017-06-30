@@ -17,7 +17,6 @@ angular.module('app').controller('usersCtrl', ['$http', '$scope','locals', funct
         console.log(data);
         $scope.user = data.users;
         $scope.users = [];
-        // 页数
         $scope.paginationsnum = [];
         var num =  Math.ceil($scope.user.length/18);
         for(var j=0;j<num;j++){
@@ -32,14 +31,7 @@ angular.module('app').controller('usersCtrl', ['$http', '$scope','locals', funct
                 $scope.users.push($scope.user[i]);
             }
         }
-        // 取得本用户
-        // var thisnum = '';
-        // for(var k=0;k<$scope.user.length;k++){
-        //     if($scope.user[k].id == uid){
-        //         thisnum = k;
-        //     }
-        // }
-        // $scope.myuser = $scope.user[thisnum];
+        $scope.fadeInto=false;
     });
     //分页
     $scope.pagination_page = function(index){
@@ -64,7 +56,7 @@ angular.module('app').controller('usersCtrl', ['$http', '$scope','locals', funct
     function getPagination(agination_index){
         $http({
             method:"POST",
-            url:"http://washer.mychaochao.cn/db/user.php",
+            url:"../../db/user.php",
             data:{
                 sid:sid,
                 cmd:"get_list"
@@ -86,12 +78,12 @@ angular.module('app').controller('usersCtrl', ['$http', '$scope','locals', funct
             $($('.pagination li.Pagination')[agination_index]).addClass('active').siblings().removeClass('active');
         });
     }
-    //查看详细**********
-    $scope.checkUser = function(index){
+    //修改****
+    $scope.change = function(index){
         $scope.userItem = $scope.users[index];
-        //点击确定
-        $scope.sure_user=function () {
-            // 调用获取用户信息接口
+        var s_mobile=$scope.userItem.mobile,
+            s_name=$scope.userItem.username;
+        $scope.change_sure=function () {
             $http({
                 method:"post",
                 url:"http://washer.mychaochao.cn/db/user.php",
@@ -105,90 +97,49 @@ angular.module('app').controller('usersCtrl', ['$http', '$scope','locals', funct
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 transformRequest: function (data) {return $.param(data);}
             }).success(function(data){
-                console.log(data)
-            });
-            $('#checkUser').modal('hide')
-        };
-        //点击删除
-        $scope.del_user = function(){
-            //删除弹出框的确定
-            $scope.del_sure = function(){
-                //调用删除管理员接口
-                $http({
-                    method:'post',
-                    url:'http://washer.mychaochao.cn/db/user.php',
-                    data:{
-                        sid:sid,
-                        cmd:'del',
-                        id:$scope.users[index].id
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    transformRequest: function (data) {return $.param(data);}
-                }).success(function(data){
-                    //分页 判断删除时，条数是否正好是18的倍数，如果是则agination_index要减一；
-                    var big= Math.floor(($scope.user.length-1)/18);
-                    var flag = ($scope.user.length-1) - big*18;
-                    if(flag==0){
-                        if(agination_index == ($scope.paginationsnum.length-1)){
-                            agination_index--;
-                        }
-                        $scope.paginationsnum.length--;
-                    }
-                    getPagination(agination_index);
-                })
-            };
-            //删除弹出框的取消
-            $scope.del_cancel=function () {
-                $('#del').modal('hide')
-            };
-            // 点击叉号
-            $('#close').click(function(){
-                $('#del').modal('hide')
-            })
-        };
-        //点击取消
-        $scope.cancel_check=function () {
-            $('#checkUser').modal('hide')
-        };
-    };
-
-    //添加管理员**********
-    $scope.addAdmin = function() {
-        // 点击确定
-        $scope.add_sure = function () {
-            var pwd = md5(md5($('#t_pwd').val()));
-            // 调用新增管理员用户
-            $http({
-                method: "post",
-                url: "http://washer.mychaochao.cn/db/user.php",
-                data: {
-                    sid: sid,
-                    cmd: "add_manager",
-                    mobile: $('#t_tel').val(),
-                    name: $('#t_name').val(),
-                    pwd: pwd,
-                    vendor: $('#t_vendorid').val()
-                },
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                transformRequest: function (data) {return $.param(data);}
-            }).success(function (data) {
                 console.log(data);
-                $('#addAdmin').modal('hide').find('input').val('');
-                if(data.errno=="1"){
-                    alert("添加成功");
-                }else{
-                    alert(data.errmsg);
-                }
+                $('#changeModal').modal('hide');
             });
-            //点击取消
-            $scope.add_cancel = function () {
-                $('#addAdmin').modal('hide').find('input').val('');
-            }
+        };
+        $scope.change_cancel=function () {
+            $scope.userItem.mobile=s_mobile;
+            $scope.userItem.name=s_name;
+            $('#changeModal').modal('hide')
         };
     };
-    $scope.empty=function (e) {
-        if(e.mobile!=""){
-            return e;
-        }
-    }
+    //删除
+    // $scope.delete = function(index){
+    //     $scope.userItem = $scope.users[index];
+    //     $scope.delete_sure = function(){
+    //         $http({
+    //             method:'post',
+    //             url:'http://washer.mychaochao.cn/db/user.php',
+    //             data:{
+    //                 sid:sid,
+    //                 cmd:'del',
+    //                 id:$scope.users[index].id
+    //             },
+    //             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    //             transformRequest: function (data) {return $.param(data);}
+    //         }).success(function(data){
+    //           console.log(data);
+    //             var big= Math.floor(($scope.user.length-1)/18);
+    //             var flag = ($scope.user.length-1) - big*18;
+    //             if(flag==0){
+    //                 if(agination_index == ($scope.paginationsnum.length-1)){
+    //                     agination_index--;
+    //                 }
+    //                 $scope.paginationsnum.length--;
+    //             }
+    //             getPagination(agination_index);
+    //             $('#deleteModal').modal('hide');
+    //         })
+    //     };
+    //     $scope.delete_cancel=function () {
+    //         $('#deleteModal').modal('hide');
+    //     };
+    //     $('#close').click(function(){
+    //         $('#deleteModal').modal('hide');
+    //     })
+    // };
 }]);

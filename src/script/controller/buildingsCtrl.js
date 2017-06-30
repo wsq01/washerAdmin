@@ -32,10 +32,9 @@ angular.module('app').controller('buildingsCtrl', ['$http', '$scope','locals', f
             }
         }
     });
-    // 添加地区**********
+    // 添加****
     $scope.add = function() {
         $scope.add_sure = function() {
-            // 调用添加地区信息接口
             $http({
                 method: "post",
                 url: "../../db/building.php",
@@ -48,7 +47,6 @@ angular.module('app').controller('buildingsCtrl', ['$http', '$scope','locals', f
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 transformRequest: function(data) {return $.param(data);}
             }).success(function(data) {
-                // 页数
                 $scope.paginationsnum = [];
                 var num = Math.ceil(($scope.building.length + 1) / 18);
                 for (var j = 0; j < num; j++) {
@@ -61,54 +59,16 @@ angular.module('app').controller('buildingsCtrl', ['$http', '$scope','locals', f
             });
             $('#add').modal('hide');
         };
-        //点击取消
         $scope.add_cancel=function () {
             $('#add').modal('hide')
         }
     };
-    // 查看详细**********
-    $scope.check = function(index) {
+    // 修改****
+    $scope.change = function(index) {
         $scope.buildingItem = $scope.buildings[index];
-        var s_name = $scope.buildingItem.name;
-        // 查看详细的删除
-        $scope.check_del= function() {
-            $scope.del_sure = function() {
-                $http({
-                    method: "post",
-                    url: "../../db/building.php",
-                    data: {
-                        sid: sid,
-                        cmd: "del",
-                        id:$scope.buildingItem.id
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    transformRequest: function(data) {return $.param(data);}
-                }).success(function(data) {
-                    var big = Math.floor(($scope.building.length - 1) / 18);
-                    var flag = ($scope.building.length - 1) - big * 18;
-                    if (flag == 0) {
-                        if(agination_index == ($scope.paginationsnum.length-1)){
-                            agination_index--;
-                        }
-                        $scope.paginationsnum.length--;
-                    }
-                    getPagination(agination_index);
-                });
-                $('#del').modal('hide');
-                $('#checkModel').modal('hide');
-            };
-            // 点击取消
-            $scope.del_cancel=function () {
-                $('#del').modal('hide')
-            };
-            // 点击叉号
-            $('#close').click(function(){
-                $('#del').modal('hide')
-            })
-        };
-        //查看详细的确定
-        $scope.check_sure= function() {
-            // 调用修改地区信息接口
+        var s_name = $scope.buildingItem.name,
+            s_school=$scope.buildingItem.school;
+        $scope.change_sure= function() {
             $http({
                 method: "post",
                 url: "../../db/building.php",
@@ -123,13 +83,47 @@ angular.module('app').controller('buildingsCtrl', ['$http', '$scope','locals', f
                 transformRequest: function(data) {return $.param(data);}
             }).success(function (data) {
             });
-            $('#checkModel').modal('hide')
+            $('#changeModal').modal('hide')
         };
-        //查看详情的取消
-        $scope.check_cancel=function () {
+        $scope.change_cancel=function () {
             $scope.buildingItem.name = s_name;
-            $('#checkModel').modal('hide')
+            $scope.buildingItem.school=s_school;
+            $('#changeModal').modal('hide');
         };
+    };
+    // 删除****
+    $scope.delete= function(index) {
+        $scope.buildingItem = $scope.buildings[index];
+        $scope.delete_sure = function() {
+            $http({
+                method: "post",
+                url: "../../db/building.php",
+                data: {
+                    sid: sid,
+                    cmd: "del",
+                    id:$scope.buildings[index].id
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(data) {return $.param(data);}
+            }).success(function(data) {
+                var big = Math.floor(($scope.building.length - 1) / 18);
+                var flag = ($scope.building.length - 1) - big * 18;
+                if (flag == 0) {
+                    if(agination_index == ($scope.paginationsnum.length-1)){
+                        agination_index--;
+                    }
+                    $scope.paginationsnum.length--;
+                }
+                getPagination(agination_index);
+            });
+            $('#deleteModal').modal('hide');
+        };
+        $scope.delete_cancel=function () {
+            $('#deleteModal').modal('hide');
+        };
+        $('#close').click(function(){
+            $('#deleteModal').modal('hide');
+        })
     };
     // 分页
     $scope.pagination_page = function(index) {

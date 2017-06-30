@@ -10,7 +10,6 @@ angular.module('app').controller('navCtrl',['$scope','locals','$state','$http','
   };
   //修改密码********
   $scope.changePwd=function () {
-      var pwd=md5(md5($('#t_newPwd').val()));
       $scope.change_sure=function () {
           $http({
               method:'post',

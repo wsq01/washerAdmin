@@ -1,4 +1,5 @@
 <section>
+  <div class="animated fadeIn">
     <h3 class="text-center">楼列表</h3>
     <nav class="navbar navbar-default navbar-margin">
         <div class="container-fluid">
@@ -8,36 +9,6 @@
                 </div>
             </div>
             <button class="btn btn-primary navbar-btn" ng-click="add()" data-toggle="modal" data-target="#add">添加楼</button>
-            <div class="modal fade" id="add">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                            <h4 class="modal-title">信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">楼名称:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="addItem.name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">所属学校ID:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="addItem.school">
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" ng-click="add_sure()" ng-disabled="!addItem.name">确定</button>
-                            <button class="btn btn-default" ng-click="add_cancel()">取消</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </nav>
     <div class="table-responsive">
@@ -51,80 +22,101 @@
             </tr>
             </thead>
             <tbody>
+            <tr ng-if="building.length==0">
+              <td class="text-center" colspan=4>
+                没有数据！
+              </td>
+            </tr>
             <tr ng-repeat="x in buildings | filter:search" ng-click="showareaItem($index)" class="text-center">
                 <td  class="text-center">{{x.id}}</td>
                 <td class="text-center">{{x.name}}</td>
                 <td class="text-center">{{x.school}}</td>
                 <td class="text-center">
-                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#checkModel" ng-click="check($index)">查看详细</button>
-
+                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#changeModal" ng-click="change($index)">修改</button>
+                    <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deleteModal" ng-click="delete($index)">删除</button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="modal fade" id="checkModel" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                        <h4 class="modal-title">信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">楼名称:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="buildingItem.name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">所属学校ID:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="buildingItem.school">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-danger" ng-click="check_del()" data-toggle="modal" data-target="#del">删除</button>
-                        <button class="btn btn-primary" ng-click="check_sure()">确定</button>
-                        <button class="btn btn-default" ng-click="check_cancel()">取消</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal modal-p" id="del" data-backdrop="static">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" id="close"><span>&times;</span></button>
-                        <h4 class="text-left">操作</h4>
-                    </div>
-                    <div class="modal-body text-center">
-                        <p>您确定要执行删除操作？</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" ng-click="del_sure()">确定</button>
-                        <button class="btn btn-default" ng-click="del_cancel()">取消</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!--分页-->
-    <nav class="text-center">
-        <ul class="pagination">
-            <li>
-                <a aria-label="Previous" ng-click="toPreviouspage()" href="javascript:;">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li ng-repeat="y in paginationsnum" ng-click="pagination_page($index)" class="Pagination"><a href="javascript:;">{{y.name}}</a></li>
-            <li>
-                <a  aria-label="Next" ng-click="toNextpage()" href="javascript:;">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <div app-page ng-hide="building.length==0"></div>
+  </div>
+  <div class="modal fade" id="add">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                  <h4 class="modal-title">信息</h4>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">楼名称:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="addItem.name">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">所属学校ID:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="addItem.school">
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="add_sure()" ng-disabled="!addItem.name">确定</button>
+                  <button class="btn btn-default" ng-click="add_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="changeModal" data-backdrop="static">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                  <h4 class="modal-title">信息</h4>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">楼名称:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="buildingItem.name">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">所属学校ID:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="buildingItem.school">
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="change_sure()">确定</button>
+                  <button class="btn btn-default" ng-click="change_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="deleteModal" data-backdrop="static">
+      <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" id="close"><span>&times;</span></button>
+                  <h4 class="text-left">操作</h4>
+              </div>
+              <div class="modal-body text-center">
+                  <p>您确定要执行删除操作？</p>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="delete_sure()">确定</button>
+                  <button class="btn btn-default" ng-click="delete_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </section>

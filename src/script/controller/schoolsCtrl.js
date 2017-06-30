@@ -66,50 +66,12 @@ angular.module('app').controller('schoolsCtrl', ['$http', '$scope','locals', fun
             $('#add').modal('hide')
         }
     };
-    // 查看详细**********
-    $scope.check = function(index) {
+    //修改****
+    $scope.change = function(index) {
         $scope.schoolItem = $scope.schools[index];
-        var s_name = $scope.schoolItem.name;
-        // 查看详细的删除
-        $scope.check_del= function() {
-            $scope.del_sure = function() {
-                $http({
-                    method: "post",
-                    url: "../../db/school.php",
-                    data: {
-                        sid: sid,
-                        cmd: "del",
-                        id:$scope.schoolItem.id
-                    },
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    transformRequest: function(data) {return $.param(data);}
-                }).success(function(data) {
-                    console.log(data);
-                    var big = Math.floor(($scope.school.length - 1) / 18);
-                    var flag = ($scope.school.length - 1) - big * 18;
-                    if (flag == 0) {
-                        if(agination_index == ($scope.paginationsnum.length-1)){
-                            agination_index--;
-                        }
-                        $scope.paginationsnum.length--;
-                    }
-                    getPagination(agination_index);
-                });
-                $('#del').modal('hide');
-                $('#checkModel').modal('hide');
-            };
-            // 点击取消
-            $scope.del_cancel=function () {
-                $('#del').modal('hide')
-            };
-            // 点击叉号
-            $('#close').click(function(){
-                $('#del').modal('hide')
-            })
-        };
-        //查看详细的确定
-        $scope.check_sure= function() {
-            // 调用修改地区信息接口
+        var s_name = $scope.schoolItem.name,
+            s_city=$scope.schoolItem.city;
+        $scope.change_sure= function() {
             $http({
                 method: "post",
                 url: "../../db/district.php",
@@ -125,13 +87,48 @@ angular.module('app').controller('schoolsCtrl', ['$http', '$scope','locals', fun
             }).success(function (data) {
                 console.log(data);
             });
-            $('#checkModel').modal('hide')
+            $('#changeModal').modal('hide');
         };
-        //查看详情的取消
-        $scope.check_cancel=function () {
+        $scope.change_cancel=function () {
             $scope.schoolItem.name = s_name;
-            $('#checkModel').modal('hide')
+            $scope.schoolItem.city=s_city;
+            $('#changeModal').modal('hide');
         };
+    };
+    // 删除
+    $scope.delete= function(index) {
+        $scope.schoolItem = $scope.schools[index];
+        $scope.delete_sure = function() {
+            $http({
+                method: "post",
+                url: "../../db/school.php",
+                data: {
+                    sid: sid,
+                    cmd: "del",
+                    id:$scope.schoolItem.id
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function(data) {return $.param(data);}
+            }).success(function(data) {
+                console.log(data);
+                var big = Math.floor(($scope.school.length - 1) / 18);
+                var flag = ($scope.school.length - 1) - big * 18;
+                if (flag == 0) {
+                    if(agination_index == ($scope.paginationsnum.length-1)){
+                        agination_index--;
+                    }
+                    $scope.paginationsnum.length--;
+                }
+                getPagination(agination_index);
+            });
+            $('#deleteModal').modal('hide');
+        };
+        $scope.delete_cancel=function () {
+            $('#deleteModal').modal('hide');
+        };
+        $('#close').click(function(){
+            $('#deleteModal').modal('hide');
+        })
     };
     // 分页
     $scope.pagination_page = function(index) {

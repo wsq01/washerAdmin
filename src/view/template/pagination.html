@@ -1,0 +1,15 @@
+<div class="text-center">
+    <ul class="pagination">
+        <li>
+            <a ng-click="toPreviouspage()" href="javascript:;">
+                <span>&laquo;</span>
+            </a>
+        </li>
+        <li ng-repeat="y in paginationsnum" ng-click="pagination_page($index)"><a href="javascript:;">{{y.name}}</a></li>
+        <li>
+            <a ng-click="toNextpage()" href="javascript:;">
+                <span>&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</div>

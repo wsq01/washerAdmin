@@ -1,4 +1,5 @@
 <section>
+  <div class="animated fadeIn">
     <h3 class="text-center">代理商列表</h3>
     <nav class="navbar navbar-default navbar-margin">
         <div class="container-fluid">
@@ -8,33 +9,22 @@
                 </div>
             </div>
             <button class="btn btn-primary navbar-btn" ng-click="addVendor()" data-toggle="modal" data-target="#addVendor">添加代理商</button>
-            <div class="modal fade" id="addVendor">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                            <h4 class="modal-title">信息</h4>
-                        </div>
-                        <div class="modal-body">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="t_company">代理商名称:</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" ng-model="addItem.company" required>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" ng-click="add_sure()" ng-disabled="!addItem.company">确定</button>
-                            <button class="btn btn-default" ng-click="add_cancel()">取消</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </nav>
-    <div class="table-responsive">
+
+    <div class="">
+      <table ng-table="vendorTable" class="table table-condensed table-bordered table-striped">
+        <tr ng-repeat="item in $data">
+          <td title="'id'" filter="{id:'number'}" sortable="'id'">{{item.id}}</td>
+          <td title="'名称'" filter="{company:'text'}" sortable="'company'">{{item.company}}</td>
+          <td title="'等级'" filter="{level:'number'}" sortable="'level'">{{item.level}}</td>
+          <td title="'状态'" filter="{status:'number'}" sortable="'status'">{{item.status}}</td>
+          <td title="'操作'"><button ng-click="change($index)" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#changeModal">修改</button></td>
+        </tr>
+      </table>
+    </div>
+    
+    <!-- <div class="table-responsive">
         <table class="table table-bordered table-p">
             <thead>
             <tr class="table-color">
@@ -52,71 +42,82 @@
                 <td class="text-center">{{x.level}}</td>
                 <td class="text-center">{{x.status=="1"?"有效":"无效"}}</td>
                 <td class="text-center">
-                  <button ng-click="checkUser($index)" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#checkUser">修改</button>
+                  <button ng-click="change($index)" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#changeModal">修改</button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="modal fade" id="checkUser" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal"><span>&times;</span></button>
-                        <h4 class="modal-title">信息</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">代理商名称:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="userItem.company">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">代理商等级:</label>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" ng-model="userItem.level">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">代理商状态:</label>
-                                <div class="col-sm-8">
-                                    <div class="radio">
-                                      <label>
-                                        <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==1?true:false" value="1">
-                                        有效
-                                      </label>
-                                        <label>
-                                          <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==0?true:false" value="0">
-                                          无效
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" ng-click="sure_user()">确定</button>
-                        <button class="btn btn-default" ng-click="cancel_check()">取消</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 分页标签 -->
-    <nav class="text-center">
-        <ul class="pagination">
-            <li>
-                <a aria-label="Previous" ng-click="toPreviouspage()" href="javascript:;">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li ng-repeat="y in paginationsnum" ng-click="pagination_page($index)" class="Pagination"><a href="javascript:;">{{y.name}}</a></li>
-            <li>
-                <a  aria-label="Next" ng-click="toNextpage()" href="javascript:;">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    </div> -->
+    <!-- 分页 -->
+    <div app-page ng-hide="user.length==0"></div>
+  </div>
+  <div class="modal fade" id="addVendor">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                  <h4 class="modal-title">信息</h4>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label" for="t_company">代理商名称:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="addItem.company" required>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="add_sure()" ng-disabled="!addItem.company">确定</button>
+                  <button class="btn btn-default" ng-click="add_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="changeModal" data-backdrop="static">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" data-dismiss="modal"><span>&times;</span></button>
+                  <h4 class="modal-title">信息</h4>
+              </div>
+              <div class="modal-body">
+                  <form class="form-horizontal">
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">代理商名称:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="userItem.company">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">代理商等级:</label>
+                          <div class="col-sm-8">
+                              <input type="text" class="form-control" ng-model="userItem.level">
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label">代理商状态:</label>
+                          <div class="col-sm-8">
+                              <div class="radio">
+                                <label>
+                                  <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==1?true:false" value="1">
+                                  有效
+                                </label>
+                                  <label>
+                                    <input type="radio" name="status" ng-model="userItem.status" ng-checked="userItem.status==0?true:false" value="0">
+                                    无效
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                  <button class="btn btn-primary" ng-click="change_sure()">确定</button>
+                  <button class="btn btn-default" ng-click="change_cancel()">取消</button>
+              </div>
+          </div>
+      </div>
+  </div>
 </section>
